@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog - OTT Marketplace</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --accent-color: #fd79a8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f6fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        
+        .catalog-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .catalog-title {
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .catalog-description {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .catalog-container {
+            padding: 50px 0;
+        }
+        
+        .filter-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        
+        .form-check {
+            margin-bottom: 10px;
+        }
+        
+        .form-check-label {
+            cursor: pointer;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .price-range {
+            margin-top: 15px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .product-content {
+            padding: 20px;
+        }
+        
+        .product-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .product-price span {
+            font-size: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .product-features {
+            margin-bottom: 15px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .feature-icon {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background-color: #ff5e94;
+            border-color: #ff5e94;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+        
+        .platform-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .badge-netflix {
+            background-color: #e50914;
+            color: white;
+        }
+        
+        .badge-prime {
+            background-color: #00a8e1;
+            color: white;
+        }
+        
+        .badge-hotstar {
+            background-color: #1f80e0;
+            color: white;
+        }
+        
+        .badge-sony {
+            background-color: #a92133;
+            color: white;
+        }
+        
+        .badge-zee {
+            background-color: #6b2c91;
+            color: white;
+        }
+        
+        .sold-out-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+        }
+        
+        .sold-out-text {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 700;
+            transform: rotate(-15deg);
+            font-size: 1.5rem;
+        }
+        
+        .product-wrapper {
+            position: relative;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0;
+            margin-top: auto;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        .pagination {
+            margin-top: 30px;
+        }
+        
+        .page-link {
+            color: var(--primary-color);
+            border-radius: 50%;
+            margin: 0 5px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .page-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .filter-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">OTT Marketplace</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="catalog.html">Catalog</a>
+                    </li>
+                    <li class="nav-item" id="dashboard-nav">
+                        <a class="nav-link" href="dashboard.html">My Account</a>
+                    </li>
+                    <li class="nav-item" id="login-nav">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item" id="signup-nav">
+                        <a class="nav-link" href="signup.html">Sign Up</a>
+                    </li>
+                    <li class="nav-item d-none" id="logout-nav">
+                        <a class="nav-link" href="#" id="logout-btn">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Catalog Header -->
+    <section class="catalog-header">
+        <div class="container">
+            <h1 class="catalog-title">Browse Our OTT Subscriptions</h1>
+            <p class="catalog-description">Discover premium streaming services at unbeatable prices. Choose from a wide range of platforms and subscription durations.</p>
+        </div>
+    </section>
+
+    <!-- Catalog Content -->
+    <section class="catalog-container">
+        <div class="container">
+            <div class="row">
+                <!-- Filters Sidebar -->
+                <div class="col-lg-3">
+                    <div class="filter-card">
+                        <h5 class="filter-title">Filters</h5>
+                        
+                        <!-- Platform Filter -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Platform</h6>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="netflix-check" checked>
+                                <label class="form-check-label" for="netflix-check">
+                                    Netflix
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="prime-check" checked>
+                                <label class="form-check-label" for="prime-check">
+                                    Amazon Prime
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="hotstar-check" checked>
+                                <label class="form-check-label" for="hotstar-check">
+                                    Disney+ Hotstar
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="sony-check" checked>
+                                <label class="form-check-label" for="sony-check">
+                                    Sony LIV
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="zee-check" checked>
+                                <label class="form-check-label" for="zee-check">
+                                    ZEE5
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Duration Filter -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Duration</h6>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="1month-check" checked>
+                                <label class="form-check-label" for="1month-check">
+                                    1 Month
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="3month-check" checked>
+                                <label class="form-check-label" for="3month-check">
+                                    3 Months
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="6month-check" checked>
+                                <label class="form-check-label" for="6month-check">
+                                    6 Months
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="12month-check" checked>
+                                <label class="form-check-label" for="12month-check">
+                                    12 Months
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Price Range Filter -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Price Range</h6>
+                            <div class="price-range">
+                                <label for="price-range" class="form-label">Max Price: ₹<span id="price-value">2000</span></label>
+                                <input type="range" class="form-range" min="100" max="5000" step="100" value="2000" id="price-range">
+                            </div>
+                        </div>
+                        
+                        <!-- Apply Filters Button -->
+                        <button class="btn btn-primary" id="apply-filters">
+                            <i class="fas fa-filter me-2"></i>Apply Filters
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Products Grid -->
+                <div class="col-lg-9">
+                    <div class="row" id="products-container">
+                        <!-- Products will be loaded dynamically -->
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>OTT Marketplace</h5>
+                    <p>Your one-stop destination for all premium OTT subscriptions at the best prices.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="signup.html">Sign Up</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Connect With Us</h5>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 OTT Marketplace. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Product Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-product-title">Product Title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="" id="modal-product-image" class="img-fluid rounded" alt="Product Image">
+                        </div>
+                        <div class="col-md-6">
+                            <h3 id="modal-product-price" class="mb-3">₹499 <span>/month</span></h3>
+                            <div id="modal-product-description" class="mb-3">
+                                Product description will appear here.
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="fw-bold">Features:</h6>
+                                <ul id="modal-product-features">
+                                    <!-- Features will be loaded dynamically -->
+                                </ul>
+                            </div>
+                            <div id="modal-product-actions">
+                                <button class="btn btn-primary mb-2 w-100" id="buy-now-btn">
+                                    <i class="fas fa-shopping-cart me-2"></i>Buy Now
+                                </button>
+                                <button class="btn btn-outline-primary w-100" data-bs-dismiss="modal">
+                                    <i class="fas fa-arrow-left me-2"></i>Continue Shopping
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check login status
+            const token = localStorage.getItem('token');
+            const loginNav = document.getElementById('login-nav');
+            const signupNav = document.getElementById('signup-nav');
+            const logoutNav = document.getElementById('logout-nav');
+            const dashboardNav = document.getElementById('dashboard-nav');
+            
+            if (token) {
+                // User is logged in
+                loginNav.classList.add('d-none');
+                signupNav.classList.add('d-none');
+                logoutNav.classList.remove('d-none');
+                dashboardNav.classList.remove('d-none');
+                
+                // Add logout functionality
+                document.getElementById('logout-btn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'index.html';
+                });
+            } else {
+                // User is not logged in
+                loginNav.classList.remove('d-none');
+                signupNav.classList.remove('d-none');
+                logoutNav.classList.add('d-none');
+                dashboardNav.classList.add('d-none');
+            }
+            
+            // Sample products data (in a real app, this would come from an API)
+            const products = [
+                {
+                    id: 1,
+                    title: 'Netflix Premium',
+                    platform: 'netflix',
+                    duration: 1,
+                    price: 499,
+                    image: 'https://cdn.vox-cdn.com/thumbor/AwKSiDyDnwy_qoVdLPyoRPUPo00=/39x0:3111x2048/1400x1400/filters:focal(39x0:3111x2048):format(png)/cdn.vox-cdn.com/uploads/chorus_image/image/49901753/netflixlogo.0.0.png',
+                    description: 'Enjoy unlimited access to Netflix Premium for 1 month. Watch on 4 screens simultaneously in Ultra HD quality.',
+                    features: [
+                        'Ultra HD (4K) streaming',
+                        'Watch on 4 screens at once',
+                        'Download on 4 devices',
+                        'All Netflix content included',
+                        'First month warranty'
+                    ],
+                    soldOut: false
+                },
+                {
+                    id: 2,
+                    title: 'Netflix Premium',
+                    platform: 'netflix',
+                    duration: 3,
+                    price: 1399,
+                    image: 'https://cdn.vox-cdn.com/thumbor/AwKSiDyDnwy_qoVdLPyoRPUPo00=/39x0:3111x2048/1400x1400/filters:focal(39x0:3111x2048):format(png)/cdn.vox-cdn.com/uploads/chorus_image/image/49901753/netflixlogo.0.0.png',
+                    description: 'Enjoy unlimited access to Netflix Premium for 3 months. Watch on 4 screens simultaneously in Ultra HD quality.',
+                    features: [
+                        'Ultra HD (4K) streaming',
+                        'Watch on 4 screens at once',
+                        'Download on 4 devices',
+                        'All Netflix content included',
+                        'First month warranty'
+                    ],
+                    soldOut: false
+                },
+                {
+                    id: 3,
+                    title: 'Amazon Prime',
+                    platform: 'prime',
+                    duration: 6,
+                    price: 849,
+                    image: 'https://m.media-amazon.com/images/G/01/primevideo/seo/primevideo-seo-logo.png',
+                    description: 'Get Amazon Prime Video subscription for 6 months. Enjoy exclusive Amazon Originals, popular movies and TV shows.',
+                    features: [
+                        'Full HD streaming',
+                        'Watch on 3 devices at once',
+                        'Download for offline viewing',
+                        'Prime Video + Shopping benefits',
+                        'First month warranty'
+                    ],
+                    soldOut: false
+                },
+                {
+                    id: 4,
+                    title: 'Disney+ Hotstar',
+                    platform: 'hotstar',
+                    duration: 1,
+                    price: 299,
+                    image: 'https://img.hotstar.com/image/upload/v1656431456/web-images/logo-d-plus.svg',
+                    description: 'Access Disney+ Hotstar Premium for 1 month. Watch Disney, Marvel, Pixar, Star Wars, and National Geographic content.',
+                    features: [
+                        'Full HD streaming',
+                        'Watch on 2 screens at once',
+                        'All content including Disney+',
+                        'Live sports including IPL',
+                        'First month warranty'
+                    ],
+                    soldOut: true
+                },
+                {
+                    id: 5,
+                    title: 'Sony LIV Premium',
+                    platform: 'sony',
+                    duration: 3,
+                    price: 699,
+                    image: 'https://www.sonyliv.com/assets/logo.png',
+                    description: 'Get Sony LIV Premium subscription for 3 months. Watch exclusive Sony content, live sports, and more.',
+                    features: [
+                        'Full HD streaming',
+                        'Watch on 2 screens at once',
+                        'Ad-free experience',
+                        'Live sports including cricket',
+                        'First month warranty'
+                    ],
+                    soldOut: false
+                },
+                {
+                    id: 6,
+                    title: 'ZEE5 Premium',
+                    platform: 'zee',
+                    duration: 12,
+                    price: 999,
+                    image: 'https://www.zee5.com/images/ZEE5_logo.png',
+                    description: 'Enjoy ZEE5 Premium for a full year. Access to exclusive ZEE5 Originals, movies, TV shows, and live channels.',
+                    features: [
+                        'Full HD streaming',
+                        'Watch on 3 screens at once',
+                        'Download for offline viewing',
+                        'Access to 90+ live TV channels',
+                        'First month warranty'
+                    ],
+                    soldOut: false
+                }
+            ];
+            
+            // Load products
+            function loadProducts(filteredProducts = products) {
+                const productsContainer = document.getElementById('products-container');
+                
+                if (filteredProducts.length === 0) {
+                    productsContainer.innerHTML = `
+                        <div class="col-12 text-center py-5">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <h4>No products found</h4>
+                            <p class="text-muted">Try adjusting your filters to find what you're looking for.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let productsHTML = '';
+                
+                filteredProducts.forEach(product => {
+                    let platformBadgeClass = '';
+                    switch (product.platform) {
+                        case 'netflix':
+                            platformBadgeClass = 'badge-netflix';
+                            break;
+                        case 'prime':
+                            platformBadgeClass = 'badge-prime';
+                            break;
+                        case 'hotstar':
+                            platformBadgeClass = 'badge-hotstar';
+                            break;
+                        case 'sony':
+                            platformBadgeClass = 'badge-sony';
+                            break;
+                        case 'zee':
+                            platformBadgeClass = 'badge-zee';
+                            break;
+                    }
+                    
+                    let durationText = '';
+                    switch (product.duration) {
+                        case 1:
+                            durationText = '1 Month';
+                            break;
+                        case 3:
+                            durationText = '3 Months';
+                            break;
+                        case 6:
+                            durationText = '6 Months';
+                            break;
+                        case 12:
+                            durationText = '12 Months';
+                            break;
+                    }
+                    
+                    productsHTML += `
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="product-wrapper">
+                                <div class="product-card">
+                                    <div class="product-image" style="background-image: url('${product.image}')"></div>
+                                    <div class="product-content">
+                                        <span class="platform-badge ${platformBadgeClass}">${product.platform.charAt(0).toUpperCase() + product.platform.slice(1)}</span>
+                                        <h5 class="product-title">${product.title} (${durationText})</h5>
+                                        <div class="product-price">₹${product.price} <span>/${product.duration === 1 ? 'month' : product.duration + ' months'}</span></div>
+                                        <div class="product-features">
+                                            <div class="feature-item">
+                                                <i class="fas fa-check feature-icon"></i>
+                                                <span>${product.features[0]}</span>
+                                            </div>
+                                            <div class="feature-item">
+                                                <i class="fas fa-check feature-icon"></i>
+                                                <span>${product.features[1]}</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary view-product" data-id="${product.id}" ${product.soldOut ? 'disabled' : ''}>
+                                            ${product.soldOut ? 'Sold Out' : 'View Details'}
+                                        </button>
+                                    </div>
+                                </div>
+                                ${product.soldOut ? `
+                                    <div class="sold-out-overlay">
+                                        <div class="sold-out-text">SOLD OUT</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                productsContainer.innerHTML = productsHTML;
+                
+                // Add event listeners to view product buttons
+                document.querySelectorAll('.view-product').forEach(button => {
+                    if (!button.disabled) {
+                        button.addEventListener('click', function() {
+                            const productId = parseInt(this.getAttribute('data-id'));
+                            openProductModal(productId);
+                        });
+                    }
+                });
+            }
+            
+            // Open product modal
+            function openProductModal(productId) {
+                const product = products.find(p => p.id === productId);
+                
+                if (!product) return;
+                
+                document.getElementById('modal-product-title').textContent = `${product.title} (${product.duration} ${product.duration === 1 ? 'Month' : 'Months'})`;
+                document.getElementById('modal-product-image').src = product.image;
+                document.getElementById('modal-product-price').innerHTML = `₹${product.price} <span>/${product.duration === 1 ? 'month' : product.duration + ' months'}</span>`;
+                document.getElementById('modal-product-description').textContent = product.description;
+                
+                const featuresList = document.getElementById('modal-product-features');
+                featuresList.innerHTML = '';
+                
+                product.features.forEach(feature => {
+                    const li = document.createElement('li');
+                    li.textContent = feature;
+                    featuresList.appendChild(li);
+                });
+                
+                // Add event listener to buy now button
+                document.getElementById('buy-now-btn').onclick = function() {
+                    // Check if user is logged in
+                    if (!token) {
+                        alert('Please log in to purchase this subscription.');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    
+                    // In a real app, this would redirect to a checkout page
+                    // For demo purposes, we'll just show an alert
+                    alert(`You are about to purchase ${product.title} for ₹${product.price}. In a real app, this would take you to a checkout page.`);
+                };
+                
+                // Show the modal
+                const productModal = new bootstrap.Modal(document.getElementById('productModal'));
+                productModal.show();
+            }
+            
+            // Initialize price range slider
+            const priceRange = document.getElementById('price-range');
+            const priceValue = document.getElementById('price-value');
+            
+            priceRange.addEventListener('input', function() {
+                priceValue.textContent = this.value;
+            });
+            
+            // Apply filters
+            document.getElementById('apply-filters').addEventListener('click', function() {
+                const maxPrice = parseInt(priceRange.value);
+                
+                const platformFilters = {
+                    netflix: document.getElementById('netflix-check').checked,
+                    prime: document.getElementById('prime-check').checked,
+                    hotstar: document.getElementById('hotstar-check').checked,
+                    sony: document.getElementById('sony-check').checked,
+                    zee: document.getElementById('zee-check').checked
+                };
+                
+                const durationFilters = {
+                    1: document.getElementById('1month-check').checked,
+                    3: document.getElementById('3month-check').checked,
+                    6: document.getElementById('6month-check').checked,
+                    12: document.getElementById('12month-check').checked
+                };
+                
+                const filteredProducts = products.filter(product => {
+                    return (
+                        product.price <= maxPrice &&
+                        platformFilters[product.platform] &&
+                        durationFilters[product.duration]
+                    );
+                });
+                
+                loadProducts(filteredProducts);
+            });
+            
+            // Load initial products
+            loadProducts();
+        });
+    </script>
+</body>
+</html>

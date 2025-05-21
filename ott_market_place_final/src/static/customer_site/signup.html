@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - OTT Marketplace</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --accent-color: #fd79a8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f6fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        
+        .signup-form {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .signup-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-control {
+            border-radius: 50px;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+            border-color: var(--primary-color);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background-color: #ff5e94;
+            border-color: #ff5e94;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
+        }
+        
+        .btn-link {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-link:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        .alert {
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        .form-floating {
+            position: relative;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0;
+            margin-top: auto;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        .password-requirements {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: -15px;
+            margin-bottom: 20px;
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .requirement i {
+            margin-right: 5px;
+            font-size: 0.7rem;
+        }
+        
+        .requirement.valid {
+            color: #28a745;
+        }
+        
+        .requirement.invalid {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">OTT Marketplace</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="catalog.html">Catalog</a>
+                    </li>
+                    <li class="nav-item" id="dashboard-nav">
+                        <a class="nav-link" href="dashboard.html">My Account</a>
+                    </li>
+                    <li class="nav-item" id="login-nav">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item" id="signup-nav">
+                        <a class="nav-link active" href="signup.html">Sign Up</a>
+                    </li>
+                    <li class="nav-item d-none" id="logout-nav">
+                        <a class="nav-link" href="#" id="logout-btn">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Signup Content -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="signup-form">
+                    <h2 class="signup-title">Create Your Account</h2>
+                    
+                    <!-- Alert Messages -->
+                    <div class="alert alert-success d-none" id="success-alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <span id="success-message"></span>
+                    </div>
+                    
+                    <div class="alert alert-danger d-none" id="error-alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <span id="error-message"></span>
+                    </div>
+                    
+                    <!-- Signup Form -->
+                    <form id="signup-form">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email address" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Create a password" required>
+                            <span class="password-toggle" id="toggle-password">
+                                <i class="far fa-eye"></i>
+                            </span>
+                        </div>
+                        
+                        <!-- Password Requirements -->
+                        <div class="password-requirements">
+                            <div class="requirement" id="length-requirement">
+                                <i class="fas fa-circle"></i> At least 8 characters
+                            </div>
+                            <div class="requirement" id="uppercase-requirement">
+                                <i class="fas fa-circle"></i> At least one uppercase letter
+                            </div>
+                            <div class="requirement" id="lowercase-requirement">
+                                <i class="fas fa-circle"></i> At least one lowercase letter
+                            </div>
+                            <div class="requirement" id="number-requirement">
+                                <i class="fas fa-circle"></i> At least one number
+                            </div>
+                            <div class="requirement" id="special-requirement">
+                                <i class="fas fa-circle"></i> At least one special character
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 position-relative">
+                            <label for="confirm-password" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirm-password" placeholder="Confirm your password" required>
+                            <span class="password-toggle" id="toggle-confirm">
+                                <i class="far fa-eye"></i>
+                            </span>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="terms" required>
+                            <label class="form-check-label" for="terms">I agree to the <a href="#" class="btn-link">Terms of Service</a> and <a href="#" class="btn-link">Privacy Policy</a></label>
+                        </div>
+                        <div class="mb-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-user-plus me-2"></i>Create Account
+                            </button>
+                        </div>
+                        <div class="text-center">
+                            <p>Already have an account? <a href="login.html" class="btn-link">Login</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>OTT Marketplace</h5>
+                    <p>Your one-stop destination for all premium OTT subscriptions at the best prices.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="signup.html">Sign Up</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Connect With Us</h5>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 OTT Marketplace. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            const token = localStorage.getItem('token');
+            if (token) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            
+            // Get form elements
+            const signupForm = document.getElementById('signup-form');
+            const successAlert = document.getElementById('success-alert');
+            const errorAlert = document.getElementById('error-alert');
+            const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
+            
+            // Toggle password visibility
+            const togglePassword = document.getElementById('toggle-password');
+            const passwordInput = document.getElementById('password');
+            
+            togglePassword.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    this.querySelector('i').classList.remove('fa-eye');
+                    this.querySelector('i').classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    this.querySelector('i').classList.remove('fa-eye-slash');
+                    this.querySelector('i').classList.add('fa-eye');
+                }
+            });
+            
+            const toggleConfirm = document.getElementById('toggle-confirm');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            
+            toggleConfirm.addEventListener('click', function() {
+                if (confirmPasswordInput.type === 'password') {
+                    confirmPasswordInput.type = 'text';
+                    this.querySelector('i').classList.remove('fa-eye');
+                    this.querySelector('i').classList.add('fa-eye-slash');
+                } else {
+                    confirmPasswordInput.type = 'password';
+                    this.querySelector('i').classList.remove('fa-eye-slash');
+                    this.querySelector('i').classList.add('fa-eye');
+                }
+            });
+            
+            // Password validation
+            const lengthRequirement = document.getElementById('length-requirement');
+            const uppercaseRequirement = document.getElementById('uppercase-requirement');
+            const lowercaseRequirement = document.getElementById('lowercase-requirement');
+            const numberRequirement = document.getElementById('number-requirement');
+            const specialRequirement = document.getElementById('special-requirement');
+            
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                
+                // Check length
+                if (password.length >= 8) {
+                    lengthRequirement.classList.add('valid');
+                    lengthRequirement.classList.remove('invalid');
+                    lengthRequirement.querySelector('i').classList.remove('fa-circle');
+                    lengthRequirement.querySelector('i').classList.add('fa-check-circle');
+                } else {
+                    lengthRequirement.classList.remove('valid');
+                    lengthRequirement.classList.add('invalid');
+                    lengthRequirement.querySelector('i').classList.remove('fa-check-circle');
+                    lengthRequirement.querySelector('i').classList.add('fa-circle');
+                }
+                
+                // Check uppercase
+                if (/[A-Z]/.test(password)) {
+                    uppercaseRequirement.classList.add('valid');
+                    uppercaseRequirement.classList.remove('invalid');
+                    uppercaseRequirement.querySelector('i').classList.remove('fa-circle');
+                    uppercaseRequirement.querySelector('i').classList.add('fa-check-circle');
+                } else {
+                    uppercaseRequirement.classList.remove('valid');
+                    uppercaseRequirement.classList.add('invalid');
+                    uppercaseRequirement.querySelector('i').classList.remove('fa-check-circle');
+                    uppercaseRequirement.querySelector('i').classList.add('fa-circle');
+                }
+                
+                // Check lowercase
+                if (/[a-z]/.test(password)) {
+                    lowercaseRequirement.classList.add('valid');
+                    lowercaseRequirement.classList.remove('invalid');
+                    lowercaseRequirement.querySelector('i').classList.remove('fa-circle');
+                    lowercaseRequirement.querySelector('i').classList.add('fa-check-circle');
+                } else {
+                    lowercaseRequirement.classList.remove('valid');
+                    lowercaseRequirement.classList.add('invalid');
+                    lowercaseRequirement.querySelector('i').classList.remove('fa-check-circle');
+                    lowercaseRequirement.querySelector('i').classList.add('fa-circle');
+                }
+                
+                // Check number
+                if (/[0-9]/.test(password)) {
+                    numberRequirement.classList.add('valid');
+                    numberRequirement.classList.remove('invalid');
+                    numberRequirement.querySelector('i').classList.remove('fa-circle');
+                    numberRequirement.querySelector('i').classList.add('fa-check-circle');
+                } else {
+                    numberRequirement.classList.remove('valid');
+                    numberRequirement.classList.add('invalid');
+                    numberRequirement.querySelector('i').classList.remove('fa-check-circle');
+                    numberRequirement.querySelector('i').classList.add('fa-circle');
+                }
+                
+                // Check special character
+                if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                    specialRequirement.classList.add('valid');
+                    specialRequirement.classList.remove('invalid');
+                    specialRequirement.querySelector('i').classList.remove('fa-circle');
+                    specialRequirement.querySelector('i').classList.add('fa-check-circle');
+                } else {
+                    specialRequirement.classList.remove('valid');
+                    specialRequirement.classList.add('invalid');
+                    specialRequirement.querySelector('i').classList.remove('fa-check-circle');
+                    specialRequirement.querySelector('i').classList.add('fa-circle');
+                }
+            });
+            
+            // Handle form submission
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                const termsAccepted = document.getElementById('terms').checked;
+                
+                // Validate password
+                const isLengthValid = password.length >= 8;
+                const isUppercaseValid = /[A-Z]/.test(password);
+                const isLowercaseValid = /[a-z]/.test(password);
+                const isNumberValid = /[0-9]/.test(password);
+                const isSpecialValid = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+                
+                if (!isLengthValid || !isUppercaseValid || !isLowercaseValid || !isNumberValid || !isSpecialValid) {
+                    errorMessage.textContent = 'Please ensure your password meets all requirements.';
+                    errorAlert.classList.remove('d-none');
+                    successAlert.classList.add('d-none');
+                    return;
+                }
+                
+                // Check if passwords match
+                if (password !== confirmPassword) {
+                    errorMessage.textContent = 'Passwords do not match.';
+                    errorAlert.classList.remove('d-none');
+                    successAlert.classList.add('d-none');
+                    return;
+                }
+                
+                // Check if terms are accepted
+                if (!termsAccepted) {
+                    errorMessage.textContent = 'You must accept the Terms of Service and Privacy Policy.';
+                    errorAlert.classList.remove('d-none');
+                    successAlert.classList.add('d-none');
+                    return;
+                }
+                
+                // In a real app, this would be an API call
+                // For demo purposes, we'll simulate a successful registration
+                
+                // Show success message
+                successMessage.textContent = 'Account created successfully! Redirecting to login...';
+                successAlert.classList.remove('d-none');
+                errorAlert.classList.add('d-none');
+                
+                // Reset form
+                signupForm.reset();
+                
+                // Redirect after a short delay
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            });
+            
+            // Update navigation based on login status
+            const loginNav = document.getElementById('login-nav');
+            const signupNav = document.getElementById('signup-nav');
+            const logoutNav = document.getElementById('logout-nav');
+            const dashboardNav = document.getElementById('dashboard-nav');
+            
+            // User is not logged in
+            loginNav.classList.remove('d-none');
+            signupNav.classList.remove('d-none');
+            logoutNav.classList.add('d-none');
+            dashboardNav.classList.add('d-none');
+        });
+    </script>
+</body>
+</html>
