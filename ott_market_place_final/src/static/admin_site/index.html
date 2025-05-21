@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTT Marketplace Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #6a7c92;
+            --accent-color: #ff6b6b;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+        }
+        
+        .admin-sidebar {
+            background-color: var(--dark-color);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            padding-top: 20px;
+        }
+        
+        .admin-sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.75);
+            border-radius: 5px;
+            margin: 5px 15px;
+            padding: 10px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .admin-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .admin-header {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .admin-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+        
+        .recent-orders {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .recent-orders h5 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .table th {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+        
+        .badge-pending {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge-completed {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .badge-failed {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .action-btn {
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.2);
+        }
+        
+        .delete-btn {
+            color: var(--accent-color);
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin: 0 15px 20px;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo-text i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+        
+        .user-dropdown {
+            cursor: pointer;
+        }
+        
+        .user-dropdown img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        
+        .dropdown-item {
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--light-color);
+        }
+        
+        .dropdown-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .notification-icon {
+            position: relative;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 992px) {
+            .admin-sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .admin-sidebar .nav-link span {
+                display: none;
+            }
+            
+            .admin-sidebar .nav-link i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .logo-text span {
+                display: none;
+            }
+            
+            .admin-content {
+                margin-left: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-auto p-0 admin-sidebar">
+                <div class="logo-text">
+                    <i class="fas fa-tv"></i>
+                    <span>OTT Admin</span>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">
+                            <i class="fas fa-box"></i>
+                            <span>Products</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="orders.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="credentials.html">
+                            <i class="fas fa-key"></i>
+                            <span>Credentials</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="users.html">
+                            <i class="fas fa-users"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="settings.html">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mt-5">
+                        <a class="nav-link" href="#" id="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col admin-content">
+                <!-- Header -->
+                <div class="admin-header d-flex justify-content-between align-items-center">
+                    <h2 class="admin-title">Dashboard</h2>
+                    <div class="d-flex align-items-center">
+                        <div class="notification-icon">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </div>
+                        <div class="dropdown user-dropdown">
+                            <div class="d-flex align-items-center" data-bs-toggle="dropdown">
+                                <img src="https://via.placeholder.com/40" alt="Admin">
+                                <div class="ms-2 d-none d-lg-block">
+                                    <div class="fw-bold">Admin User</div>
+                                    <div class="small text-muted">Administrator</div>
+                                </div>
+                                <i class="fas fa-chevron-down ms-2 small"></i>
+                            </div>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Profile</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="dropdown-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stats Row -->
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="stat-card text-center">
+                            <div class="stat-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="stat-value" id="total-orders">0</div>
+                            <div class="stat-label">Total Orders</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card text-center">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-value" id="total-users">0</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card text-center">
+                            <div class="stat-icon">
+                                <i class="fas fa-rupee-sign"></i>
+                            </div>
+                            <div class="stat-value" id="total-revenue">₹0</div>
+                            <div class="stat-label">Total Revenue</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card text-center">
+                            <div class="stat-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="stat-value" id="active-products">0</div>
+                            <div class="stat-label">Active Products</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Orders -->
+                <div class="recent-orders">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5>Recent Orders</h5>
+                        <a href="orders.html" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-orders-table">
+                                <!-- Orders will be loaded dynamically -->
+                                <tr>
+                                    <td colspan="6" class="text-center">Loading recent orders...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample data (in a real app, this would come from the API)
+        const sampleOrders = [
+            {
+                id: 1001,
+                order_number: 'ORD-12345678',
+                user_id: 1,
+                user_email: 'john@example.com',
+                user_name: 'John Doe',
+                total_amount: 1399,
+                payment_status: 'completed',
+                payment_screenshot: '/static/uploads/sample_screenshot.png',
+                created_at: '2025-05-15T00:00:00Z',
+                items: [
+                    {
+                        id: 1,
+                        product_id: 6,
+                        name: 'Netflix 3 Months',
+                        price: 1399,
+                        status: 'active'
+                    }
+                ]
+            },
+            {
+                id: 1002,
+                order_number: 'ORD-87654321',
+                user_id: 2,
+                user_email: 'jane@example.com',
+                user_name: 'Jane Smith',
+                total_amount: 849,
+                payment_status: 'pending_verification',
+                payment_screenshot: '/static/uploads/sample_screenshot2.png',
+                created_at: '2025-05-19T00:00:00Z',
+                items: [
+                    {
+                        id: 2,
+                        product_id: 3,
+                        name: 'Amazon Prime 6 Months',
+                        price: 849,
+                        status: 'pending'
+                    }
+                ]
+            },
+            {
+                id: 1003,
+                order_number: 'ORD-ABCDEF12',
+                user_id: 3,
+                user_email: 'mike@example.com',
+                user_name: 'Mike Johnson',
+                total_amount: 299,
+                payment_status: 'failed',
+                payment_screenshot: '/static/uploads/sample_screenshot3.png',
+                created_at: '2025-05-20T00:00:00Z',
+                items: [
+                    {
+                        id: 3,
+                        product_id: 9,
+                        name: 'Disney+ Hotstar 1 Month',
+                        price: 299,
+                        status: 'failed'
+                    }
+                ]
+            },
+            {
+                id: 1004,
+                order_number: 'ORD-XYZ12345',
+                user_id: 4,
+                user_email: 'sarah@example.com',
+                user_name: 'Sarah Williams',
+                total_amount: 499,
+                payment_status: 'pending_verification',
+                payment_screenshot: '/static/uploads/sample_screenshot4.png',
+                created_at: '2025-05-21T00:00:00Z',
+                items: [
+                    {
+                        id: 4,
+                        product_id: 5,
+                        name: 'Netflix 1 Month',
+                        price: 499,
+                        status: 'pending'
+                    }
+                ]
+            }
+        ];
+        
+        // Format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+        
+        // Load dashboard data
+        function loadDashboardData() {
+            // In a real app, this would be an API call
+            
+            // Update stats
+            document.getElementById('total-orders').textContent = sampleOrders.length;
+            document.getElementById('total-users').textContent = '24';
+            document.getElementById('total-revenue').textContent = '₹' + sampleOrders
+                .filter(order => order.payment_status === 'completed')
+                .reduce((sum, order) => sum + order.total_amount, 0);
+            document.getElementById('active-products').textContent = '12';
+            
+            // Load recent orders
+            loadRecentOrders();
+        }
+        
+        // Load recent orders
+        function loadRecentOrders() {
+            const tableBody = document.getElementById('recent-orders-table');
+            
+            if (sampleOrders.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No recent orders found.</td></tr>';
+                return;
+            }
+            
+            // Sort orders by date (newest first)
+            const sortedOrders = [...sampleOrders].sort((a, b) => 
+                new Date(b.created_at) - new Date(a.created_at)
+            );
+            
+            // Take only the 5 most recent orders
+            const recentOrders = sortedOrders.slice(0, 5);
+            
+            let html = '';
+            
+            recentOrders.forEach(order => {
+                let statusBadge;
+                
+                switch (order.payment_status) {
+                    case 'completed':
+                        statusBadge = '<span class="badge bg-success">Completed</span>';
+                        break;
+                    case 'pending_verification':
+                        statusBadge = '<span class="badge bg-warning">Pending</span>';
+                        break;
+                    case 'failed':
+                        statusBadge = '<span class="badge bg-danger">Failed</span>';
+                        break;
+                    default:
+                        statusBadge = '<span class="badge bg-secondary">Processing</span>';
+                }
+                
+                html += `
+                    <tr>
+                        <td>${order.order_number}</td>
+                        <td>${order.user_name}</td>
+                        <td>${formatDate(order.created_at)}</td>
+                        <td>₹${order.total_amount}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <i class="fas fa-eye action-btn view-order-btn" data-order-id="${order.id}" title="View"></i>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html;
+            
+            // Add event listeners to action buttons
+            document.querySelectorAll('.view-order-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const orderId = parseInt(this.getAttribute('data-order-id'));
+                    window.location.href = `order-details.html?id=${orderId}`;
+                });
+            });
+        }
+        
+        // Check login status
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('admin_token');
+            
+            if (!token) {
+                // Redirect to login page if not logged in
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Load dashboard data
+            loadDashboardData();
+            
+            // Logout functionality
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('admin_token');
+                localStorage.removeItem('admin_user');
+                window.location.href = 'login.html';
+            });
+            
+            document.getElementById('dropdown-logout').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('admin_token');
+                localStorage.removeItem('admin_user');
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>
